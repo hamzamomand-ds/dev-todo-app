@@ -1,0 +1,155 @@
+<!-- ============================================ -->
+<!-- Developer Todo App - Main HTML File          -->
+<!-- ============================================ -->
+<!-- This is the frontend page that users see     -->
+<!-- in their browser. It has:                    -->
+<!--   - A header with the app title              -->
+<!--   - A form to add new tasks                  -->
+<!--   - A container where tasks will be listed   -->
+<!-- ============================================ -->
+
+<!DOCTYPE html>
+<!-- <!DOCTYPE html> tells the browser: "This is an HTML5 page" -->
+
+<html lang="en">
+<!-- <html> is the root element of the page -->
+<!-- lang="en" means the page content is in English -->
+
+<head>
+    <!-- ========================================== -->
+    <!-- The <head> contains META-info and links    -->
+    <!-- It does NOT show visible content           -->
+    <!-- ========================================== -->
+
+    <meta charset="UTF-8">
+    <!-- UTF-8 encoding supports special characters and emojis -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Makes the page responsive on mobile devices -->
+    <!-- "width=device-width" = use the device's screen width -->
+    <!-- "initial-scale=1.0" = don't zoom in/out by default -->
+
+    <title>DevTodo — Developer Todo App</title>
+    <!-- The text that appears on the browser tab -->
+
+    <!-- Link to our CSS stylesheet -->
+    <!-- The href path is relative: style.css is in the same folder -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <!-- ========================================== -->
+    <!-- The <body> contains everything VISIBLE     -->
+    <!-- on the page                                -->
+    <!-- ========================================== -->
+
+    <!-- ====== MAIN CONTAINER ====== -->
+    <!-- This wraps everything in a centered box    -->
+    <!-- Using a "container" class for styling      -->
+    <div class="container">
+
+        <!-- ====== HEADER SECTION ====== -->
+        <!-- The top part of our app with the logo and title -->
+        <header class="app-header">
+
+            <!-- Developer icon (using emoji for simplicity) -->
+            <div class="logo">
+                <!-- &#128187; is the HTML code for 💻 (laptop emoji) -->
+                <span class="logo-icon">&#128187;</span>
+            </div>
+
+            <!-- Main title of the app -->
+            <h1 class="app-title">DevTodo</h1>
+
+            <!-- Subtitle / tagline -->
+            <p class="app-subtitle">Developer Task Manager</p>
+
+        </header>
+
+        <!-- ====== ADD TASK FORM ====== -->
+        <!-- This is where users type and add new tasks -->
+        <!-- We use a <form> element so user can press Enter to submit -->
+        <form class="todo-form" id="todoForm">
+
+            <!-- Input field: user types their task here -->
+            <div class="input-group">
+                <input
+                    type="text"
+                    id="todoInput"
+                    class="todo-input"
+                    placeholder="Enter a new task..."
+                    autocomplete="off"
+                    required
+                >
+                <!-- 
+                    type="text"       → normal text input
+                    id="todoInput"    → JavaScript uses this ID to read the value
+                    class="todo-input" → CSS styles this input
+                    placeholder       → ghost text inside the box
+                    autocomplete="off" → don't show previous inputs
+                    required          → browser says "please fill this" if empty
+                -->
+
+                <!-- Submit button -->
+                <button type="submit" class="todo-btn" id="addBtn">
+                    <!-- The + symbol inside the button -->
+                    <span class="btn-icon">+</span>
+                    Add Task
+                </button>
+                <!-- 
+                    type="submit"  → clicking this submits the form
+                    class="todo-btn" → CSS styles this button
+                    id="addBtn"   → (reserved for future JS use)
+                -->
+            </div>
+
+        </form>
+
+        <!-- ====== TASK LIST ====== -->
+        <!-- This section will show all the todos -->
+        <!-- It starts empty — JavaScript will fill it with tasks -->
+
+        <!-- Section title -->
+        <div class="task-section-header">
+            <h2 class="task-section-title">Your Tasks</h2>
+            <!-- A small counter showing how many tasks are left -->
+            <span class="task-count" id="taskCount">0 tasks</span>
+        </div>
+
+        <!-- The actual list container -->
+        <!-- JavaScript will add task items inside this div -->
+        <div class="todo-list" id="todoList">
+            <!-- 
+                This div starts empty. 
+                When the page loads, JavaScript will:
+                1. Call get-todos.php via AJAX
+                2. Get all tasks from the database
+                3. Create HTML elements for each task
+                4. Insert them inside this div
+            -->
+
+            <!-- Placeholder message shown when there are no tasks -->
+            <!-- This will be hidden by JavaScript when tasks exist -->
+            <div class="empty-state" id="emptyState">
+                <div class="empty-icon">📋</div>
+                <p class="empty-text">No tasks yet. Add your first task above!</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- Link to our JavaScript file                -->
+    <!-- We put <script> at the bottom because:     -->
+    <!--   - HTML loads top to bottom               -->
+    <!--   - By the time JS runs, all HTML elements -->
+    <!--     already exist in the page              -->
+    <!--   - So JS can find them by ID              -->
+    <!-- ========================================== -->
+    <script src="script.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,572 @@
+/* ============================================= */
+/* Developer Todo App — Main Stylesheet          */
+/* ============================================= */
+/* 
+   This file controls the ENTIRE look and feel:
+   - Dark theme background
+   - Glassmorphism card effects
+   - Smooth hover animations
+   - Premium minimalist aesthetic
+   
+   How CSS works:
+   - We "select" HTML elements (by tag, class, or ID)
+   - We apply "properties" to change their appearance
+*/
+
+/* ============================================= */
+/* 1. GLOBAL RESET & BASE STYLES                */
+/* ============================================= */
+
+/*
+   The * selector means "select EVERY element on the page"
+   This removes default browser margins/padding
+   so we start from a clean slate.
+*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /*
+        box-sizing: border-box means:
+        - When we set width: 300px, that INCLUDES padding/border
+        - This makes layout math much easier!
+    */
+}
+
+/*
+   :root selects the <html> element
+   We define CSS variables here (like constants in programming)
+   --variable-name: value;
+   We can reuse these everywhere!
+*/
+:root {
+    /* ---- Color Palette ---- */
+    /* These are our app's colors - all carefully chosen for dark theme */
+    
+    --bg-primary: #0a0a0a;          /* Near-black background */
+    --bg-secondary: #111111;        /* Slightly lighter black */
+    --bg-card: rgba(255, 255, 255, 0.03);  /* Very subtle white for glass */
+    --bg-card-hover: rgba(255, 255, 255, 0.06); /* Slightly more visible */
+    
+    --text-primary: #ffffff;        /* Pure white text */
+    --text-secondary: #888888;      /* Muted gray for less important text */
+    --text-muted: #555555;          /* Even more muted */
+    
+    --accent-primary: #6c63ff;      /* Purple accent color (modern dev vibe) */
+    --accent-hover: #7f78ff;        /* Lighter purple on hover */
+    --accent-glow: rgba(108, 99, 255, 0.3); /* Glow effect shadow */
+    
+    --success: #00c896;             /* Green for completed tasks */
+    --danger: #ff4757;              /* Red for delete button */
+    --danger-hover: #ff6b7a;        /* Lighter red on hover */
+    
+    --border-color: rgba(255, 255, 255, 0.06); /* Subtle borders */
+    --border-focus: rgba(108, 99, 255, 0.4);   /* Purple border on focus */
+    
+    /* ---- Typography ---- */
+    --font-primary: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* 
+       System fonts only - no external downloads needed!
+       -apple-system & BlinkMacSystemFont = macOS native fonts
+       Segoe UI = Windows fallback, sans-serif = ultimate fallback
+    */
+    
+    /* ---- Sizing & Spacing ---- */
+    --radius-sm: 8px;               /* Small rounded corners */
+    --radius-md: 12px;              /* Medium rounded corners */
+    --radius-lg: 16px;              /* Large rounded corners */
+    
+    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4); /* Card shadow */
+    --shadow-glow: 0 0 20px var(--accent-glow);  /* Purple glow */
+    
+    /* ---- Animation ---- */
+    --transition-fast: 0.2s ease;   /* Quick transitions */
+    --transition-normal: 0.3s ease; /* Normal transitions */
+    --transition-slow: 0.5s ease;   /* Slow, smooth transitions */
+}
+
+/* ============================================= */
+/* 2. BODY — The Main Background                */
+/* ============================================= */
+
+/*
+   The <body> is the entire page background.
+   We make it dark with a subtle gradient overlay.
+*/
+body {
+    font-family: var(--font-primary);     /* Use our system font stack */
+    background: var(--bg-primary);        /* Near-black background */
+    color: var(--text-primary);           /* White text by default */
+    min-height: 100vh;                    /* At least full viewport height */
+    display: flex;                        /* Flexbox for centering */
+    justify-content: center;              /* Center horizontally */
+    align-items: flex-start;              /* Align to top (not center) */
+    padding: 40px 20px;                   /* Space around edges */
+    line-height: 1.6;                     /* Comfortable text spacing */
+    
+    /*
+       Background gradient effect:
+       A subtle purple glow at the top left that fades out.
+       This gives the "developer terminal" vibe.
+    */
+    background-image:
+        radial-gradient(
+            circle at 20% 20%,           /* Position: top-left area */
+            rgba(108, 99, 255, 0.05),    /* Very faint purple */
+            transparent 50%              /* Fades to transparent */
+        ),
+        radial-gradient(
+            circle at 80% 80%,           /* Position: bottom-right */
+            rgba(0, 200, 150, 0.03),     /* Very faint green */
+            transparent 50%              /* Fades to transparent */
+        );
+    
+    /* Prevent horizontal scrolling */
+    overflow-x: hidden;
+}
+
+/* ============================================= */
+/* 3. MAIN CONTAINER — The Glass Card           */
+/* ============================================= */
+
+/*
+   The .container wraps everything.
+   We use "glassmorphism" — a modern design trend:
+   - Semi-transparent background
+   - Blur effect (backdrop-filter)
+   - Subtle border (looks like frosted glass)
+   - Shadow for depth
+*/
+.container {
+    width: 100%;
+    max-width: 560px;              /* Max width so it doesn't get too wide */
+    background: var(--bg-card);    /* Very subtle transparent background */
+    backdrop-filter: blur(20px);   /* The GLASS effect! Blurs what's behind */
+    -webkit-backdrop-filter: blur(20px); /* Same for Safari compatibility */
+    border: 1px solid var(--border-color); /* Subtle glass edge */
+    border-radius: var(--radius-lg);       /* Rounded corners */
+    padding: 40px 35px;            /* Space inside the card */
+    box-shadow: var(--shadow-card);        /* Shadow for depth */
+    
+    /* Fade-in animation when page loads */
+    animation: fadeInUp 0.6s ease forwards;
+    /*
+       "forwards" means: after animation ends, keep the final state
+       (so it stays visible and doesn't snap back)
+    */
+}
+
+/*
+   KEYFRAME ANIMATION — fadeInUp
+   This makes the container smoothly appear and slide up.
+   "from" = start state, "to" = end state
+*/
+@keyframes fadeInUp {
+    from {
+        opacity: 0;      /* Start invisible */
+        transform: translateY(20px); /* Start 20px below final position */
+    }
+    to {
+        opacity: 1;      /* End fully visible */
+        transform: translateY(0); /* End at normal position */
+    }
+}
+
+/* ============================================= */
+/* 4. HEADER — Logo & Title                     */
+/* ============================================= */
+
+.app-header {
+    text-align: center;              /* Center everything */
+    margin-bottom: 35px;             /* Space below header */
+}
+
+/* The logo icon (laptop emoji) */
+.logo {
+    margin-bottom: 15px;             /* Space below icon */
+}
+
+.logo-icon {
+    font-size: 48px;                 /* Big icon size */
+    display: inline-block;            /* So transform works properly */
+    animation: float 3s ease-in-out infinite; /* Floating animation loop */
+}
+
+/*
+   FLOAT ANIMATION — makes the icon gently bob up and down
+   Like it's floating in water. Smooth and calming.
+*/
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);        /* Normal position */
+    }
+    50% {
+        transform: translateY(-8px);       /* Moves 8px up at midpoint */
+    }
+}
+
+/* Main title "DevTodo" */
+.app-title {
+    font-size: 32px;                 /* Large heading */
+    font-weight: 700;                /* Bold text */
+    background: linear-gradient(     /* Gradient text effect */
+        135deg,
+        var(--accent-primary),       /* Starts purple */
+        #a78bfa                      /* Ends lighter purple */
+    );
+    -webkit-background-clip: text;  /* Clips gradient to text shape (Safari/Chrome) */
+    background-clip: text;          /* Same for modern browsers */
+    -webkit-text-fill-color: transparent; /* Makes text itself transparent so gradient shows */
+    margin-bottom: 6px;             /* Small space below */
+    letter-spacing: -0.5px;         /* Slightly tighter letter spacing (premium feel) */
+}
+
+/* Subtitle "Developer Task Manager" */
+.app-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);    /* Muted gray */
+    font-weight: 400;
+    letter-spacing: 1.5px;          /* Spaced out letters (premium feel) */
+    text-transform: uppercase;      /* ALL CAPS */
+}
+
+/* ============================================= */
+/* 5. FORM — Add Task Input & Button            */
+/* ============================================= */
+
+.todo-form {
+    margin-bottom: 30px;             /* Space below form */
+}
+
+.input-group {
+    display: flex;                   /* Place input and button side by side */
+    gap: 10px;                       /* Space between them */
+}
+
+/*
+   The text input field
+*/
+.todo-input {
+    flex: 1;                         /* Take up remaining space */
+    padding: 14px 18px;              /* Inner spacing */
+    background: rgba(255, 255, 255, 0.05); /* Dark transparent background */
+    border: 1px solid var(--border-color); /* Subtle border */
+    border-radius: var(--radius-sm);       /* Rounded corners */
+    color: var(--text-primary);      /* White text */
+    font-size: 15px;
+    font-family: inherit;            /* Use same font as body */
+    outline: none;                   /* Remove default blue outline */
+    transition: all var(--transition-normal); /* Smooth transitions on all changes */
+}
+
+/*
+   When user clicks on the input (focus state)
+*/
+.todo-input:focus {
+    border-color: var(--border-focus);      /* Purple border appears */
+    background: rgba(255, 255, 255, 0.08);  /* Slightly brighter background */
+    box-shadow: 0 0 0 3px var(--accent-glow); /* Purple glow ring */
+}
+
+/*
+   Placeholder text styling (the ghost text)
+   ::placeholder is a "pseudo-element" — a virtual element
+*/
+.todo-input::placeholder {
+    color: var(--text-muted);        /* Muted gray placeholder */
+    font-size: 14px;
+}
+
+/*
+   The "Add Task" button
+*/
+.todo-btn {
+    padding: 14px 24px;              /* Inner spacing */
+    background: var(--accent-primary); /* Purple background */
+    color: white;                    /* White text */
+    border: none;                    /* Remove default border */
+    border-radius: var(--radius-sm); /* Rounded corners */
+    font-size: 15px;
+    font-weight: 600;               /* Semi-bold */
+    cursor: pointer;                /* Hand cursor on hover */
+    display: flex;                  /* Flexbox for icon + text alignment */
+    align-items: center;            /* Center items vertically */
+    gap: 8px;                      /* Space between icon and text */
+    transition: all var(--transition-normal); /* Smooth hover transitions */
+    white-space: nowrap;            /* Keep text on one line */
+}
+
+/*
+   Button hover effect
+*/
+.todo-btn:hover {
+    background: var(--accent-hover);   /* Lighter purple */
+    transform: translateY(-2px);       /* Lifts up 2px */
+    box-shadow: var(--shadow-glow);    /* Purple glow appears */
+}
+
+/*
+   Button click/press effect
+*/
+.todo-btn:active {
+    transform: translateY(0px);        /* Goes back down (press effect) */
+}
+
+/* The plus (+) icon inside the button */
+.btn-icon {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;                 /* Remove extra vertical space */
+}
+
+/* ============================================= */
+/* 6. TASK SECTION HEADER                       */
+/* ============================================= */
+
+.task-section-header {
+    display: flex;                   /* Place title and count side by side */
+    justify-content: space-between;  /* Push them to opposite ends */
+    align-items: center;             /* Vertically align */
+    margin-bottom: 15px;             /* Space below */
+    padding-bottom: 12px;            /* Inner bottom space */
+    border-bottom: 1px solid var(--border-color); /* Subtle separator line */
+}
+
+.task-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-secondary);    /* Muted gray (less prominent than main title) */
+    letter-spacing: 0.5px;
+}
+
+.task-count {
+    font-size: 13px;
+    color: var(--text-muted);        /* Even more muted */
+    font-weight: 500;
+}
+
+/* ============================================= */
+/* 7. TODO LIST — Individual Task Items         */
+/* ============================================= */
+
+.todo-list {
+    display: flex;
+    flex-direction: column;          /* Stack tasks vertically */
+    gap: 8px;                       /* Space between tasks */
+    min-height: 100px;              /* Minimum height so empty state looks good */
+}
+
+/*
+   Individual task item
+   This is created DYNAMICALLY by JavaScript later,
+   but we style it here so it looks good when JS adds it.
+*/
+.todo-item {
+    display: flex;                   /* Place checkbox, text, delete in a row */
+    align-items: center;             /* Vertically align */
+    gap: 12px;                      /* Space between elements */
+    padding: 14px 18px;             /* Inner spacing */
+    background: rgba(255, 255, 255, 0.03); /* Very subtle background */
+    border: 1px solid var(--border-color); /* Subtle border */
+    border-radius: var(--radius-sm);       /* Rounded corners */
+    transition: all var(--transition-normal); /* Smooth on all changes */
+    
+    /* Initial state for "new task" animation (added by JS) */
+    animation: slideIn 0.3s ease forwards;
+}
+
+/*
+   SLIDE-IN ANIMATION for each new task
+   When JavaScript adds a task, it smoothly appears from the right
+*/
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px); /* Start slightly left */
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);     /* End at normal position */
+    }
+}
+
+/* Hover effect on a task */
+.todo-item:hover {
+    background: var(--bg-card-hover); /* Brighter on hover */
+    border-color: rgba(255, 255, 255, 0.1); /* More visible border */
+    transform: translateX(4px);       /* Slides slightly right */
+}
+
+/* The custom checkbox */
+.todo-checkbox {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;              /* Make it a circle instead of square */
+    border: 2px solid var(--text-muted); /* Gray border */
+    background: transparent;
+    cursor: pointer;
+    appearance: none;                /* Remove default browser checkbox style */
+    -webkit-appearance: none;        /* Same for Safari */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;                  /* Prevent checkbox from shrinking */
+    position: relative;
+}
+
+/* Checkbox hover state */
+.todo-checkbox:hover {
+    border-color: var(--accent-primary); /* Purple border on hover */
+}
+
+/*
+   Checkbox CHECKED state (when task is completed)
+   ":checked" is a pseudo-class that activates when checkbox is ticked
+*/
+.todo-checkbox:checked {
+    background: var(--success);       /* Green background when checked */
+    border-color: var(--success);     /* Green border */
+}
+
+/*
+   Create the checkmark symbol using a pseudo-element
+   ::after creates a virtual element AFTER the checkbox content
+*/
+.todo-checkbox:checked::after {
+    content: '✓';                    /* Checkmark character */
+    color: white;                    /* White checkmark */
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/*
+   The task text
+*/
+.todo-text {
+    flex: 1;                         /* Take remaining space */
+    font-size: 15px;
+    color: var(--text-primary);
+    transition: all var(--transition-normal);
+    word-break: break-word;          /* Break long words to next line */
+}
+
+/*
+   When checkbox is checked, the text gets:
+   - Gray color
+   - Line through (strikethrough)
+   - "Completed" feel
+*/
+.todo-checkbox:checked + .todo-text {
+    /*
+       "+" means "immediately after" in CSS selectors
+       So this targets .todo-text that comes right after a checked checkbox
+    */
+    color: var(--text-muted);        /* Gray out */
+    text-decoration: line-through;   /* Strikethrough effect */
+}
+
+/*
+   The delete button (✕)
+*/
+.todo-delete {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;              /* Circle shape */
+    border: none;
+    background: transparent;         /* Invisible by default */
+    color: var(--text-muted);        /* Gray X */
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;                  /* Prevent shrinking */
+    opacity: 0;                      /* Hidden by default */
+}
+
+/*
+   Delete button appears on hover over the task
+*/
+.todo-item:hover .todo-delete {
+    opacity: 1;                      /* Becomes visible when hovering the task */
+}
+
+/* Hover state for delete button */
+.todo-delete:hover {
+    background: rgba(255, 71, 87, 0.15); /* Red tint background */
+    color: var(--danger);                /* Red text */
+    transform: scale(1.15);             /* Slightly bigger */
+}
+
+/* ============================================= */
+/* 8. EMPTY STATE — When No Tasks Exist         */
+/* ============================================= */
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;              /* Lots of space */
+    opacity: 0.6;                    /* Slightly faded */
+}
+
+.empty-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+    animation: float 3s ease-in-out infinite; /* Same float animation as logo */
+}
+
+.empty-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+/* ============================================= */
+/* 9. COMPLETED TASK STYLES (via JS class)      */
+/* ============================================= */
+
+/*
+   When JavaScript marks a task completed,
+   it adds class "completed" to the todo-item.
+   This gives the entire item a slightly different look.
+*/
+.todo-item.completed {
+    opacity: 0.7;                    /* Slightly faded */
+}
+
+.todo-item.completed .todo-text {
+    color: var(--text-muted);
+    text-decoration: line-through;
+}
+
+/* ============================================= */
+/* 10. RESPONSIVE — Looks good on small screens */
+/* ============================================= */
+
+/*
+   Media query: applies styles ONLY when screen width < 500px
+   "If the screen is small, apply these changes"
+*/
+@media (max-width: 500px) {
+    .container {
+        padding: 25px 20px;         /* Less padding on mobile */
+        border-radius: var(--radius-md); /* Slightly smaller corners */
+    }
+    
+    .app-title {
+        font-size: 26px;            /* Smaller title */
+    }
+    
+    .input-group {
+        flex-direction: column;     /* Stack input and button vertically */
+    }
+    
+    .todo-btn {
+        justify-content: center;    /* Center button content */
+    }
+    
+    .todo-item {
+        padding: 12px 14px;        /* Smaller padding */
+    }
+}
